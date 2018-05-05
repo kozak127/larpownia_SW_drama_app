@@ -10,14 +10,21 @@ import java.util.List;
 public class FieldServiceImpl implements FieldService {
 
     private final FieldRepository fieldRepository;
+    private final FieldOrderRepository fieldOrderRepository;
 
     @Autowired
-    FieldServiceImpl(FieldRepository fieldRepository) {
+    FieldServiceImpl(FieldRepository fieldRepository, FieldOrderRepository fieldOrderRepository) {
         this.fieldRepository = fieldRepository;
+        this.fieldOrderRepository = fieldOrderRepository;
     }
 
     @Override
     public List<Field> findAll() {
         return Lists.newArrayList(fieldRepository.findAll());
+    }
+
+    @Override
+    public FieldOrder saveOrder(FieldOrder fieldOrder) {
+        return fieldOrderRepository.save(fieldOrder);
     }
 }

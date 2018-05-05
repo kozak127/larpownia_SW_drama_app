@@ -1,13 +1,13 @@
 package pl.kozak127.swdramatic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pl.kozak127.swdramatic.domain.faction.Faction;
 import pl.kozak127.swdramatic.domain.faction.FactionService;
 import pl.kozak127.swdramatic.domain.field.Field;
+import pl.kozak127.swdramatic.domain.field.FieldOrder;
 import pl.kozak127.swdramatic.domain.field.FieldService;
 import pl.kozak127.swdramatic.domain.player.Player;
 import pl.kozak127.swdramatic.domain.player.PlayerService;
@@ -28,14 +28,26 @@ public class FieldController extends AbstractController {
         this.fieldService = fieldService;
     }
 
+    @RequestMapping(path = "/order", method = RequestMethod.POST)
+    ResponseEntity<?> newOrder(@RequestBody FieldOrder fieldOrder, @PathVariable String playerId) {
+        Field source = fieldOrder.getSource();
+        Player player = getPlayer(playerId);
+
+        if (!source.getManagers().contains(player)) {
+            return new ResponseEntity<>(new CustomErrorType("Unable to create order. Player " + playerId + " is not manager"), HttpStatus.FORBIDDEN);
+        }
+        fieldService.saveOrder(fieldOrder);
+        return new ResponseEntity<>(fieldOrder, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
-    Collection<Field> getAll(@PathVariable String playerId) {
+    ResponseEntity<Collection<Field>> getAll(@PathVariable String playerId) {
         Player player = getPlayer(playerId);
         if (player.isAdmin()) {
-            return fieldService.findAll();
+            return new ResponseEntity<>(fieldService.findAll(), HttpStatus.OK);
         }
 
         Faction faction = player.getFaction();
-        return factionService.getFields(faction);
+        return new ResponseEntity<>(factionService.getFields(faction), HttpStatus.OK);
     }
 }

@@ -4,4 +4,6 @@ import java.util.Collection;
 
 public interface FieldService {
     Collection<Field> findAll();
+
+    FieldOrder saveOrder(FieldOrder fieldOrder);
 }
