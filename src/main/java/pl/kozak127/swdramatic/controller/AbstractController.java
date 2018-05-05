@@ -7,11 +7,11 @@ class AbstractController {
 
     private final PlayerService playerService;
 
-    protected AbstractController(PlayerService playerService) {
+    AbstractController(PlayerService playerService) {
         this.playerService = playerService;
     }
 
-    protected Player getPlayer(String playerId) {
+    Player getPlayer(String playerId) {
         Long userIdLong = Long.getLong(playerId);
         return playerService
                 .findById(userIdLong)

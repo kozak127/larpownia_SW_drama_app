@@ -1,5 +1,6 @@
 package pl.kozak127.swdramatic.controller;
 
+import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +29,8 @@ public class UnitController extends AbstractController {
         this.unitService = unitService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    Collection<Unit> getAll(@PathVariable String playerId) {
+    @RequestMapping(path = "/allied", method = RequestMethod.GET)
+    Collection<Unit> getAllAllied(@PathVariable String playerId) {
         Player player = getPlayer(playerId);
         if (player.isAdmin()) {
             return unitService.findAll();
@@ -37,5 +38,28 @@ public class UnitController extends AbstractController {
 
         Faction faction = player.getFaction();
         return factionService.getUnits(faction);
+    }
+
+    @RequestMapping(path = "/enemy", method = RequestMethod.GET)
+    Collection<Unit> getAllVisibleEnemy(@PathVariable String playerId) {
+        Player player = getPlayer(playerId);
+        if (player.isAdmin()) {
+            return ImmutableList.of();
+        }
+        return unitService.findVisibleEnemy(player);
+    }
+
+    @RequestMapping(path = "/mutiny/{unitId}/{mutiny}", method = RequestMethod.PUT)
+    Unit mutiny(@PathVariable String playerId, @PathVariable String unitId, @PathVariable String mutiny) {
+
+        Player player = getPlayer(playerId);
+        if (!player.isAdmin()) {
+            throw new IllegalStateException();
+        }
+
+        Long unitIdLong = Long.decode(unitId);
+        Unit unit = unitService.findById(unitIdLong).orElseThrow(IllegalArgumentException::new);
+        unit.setMutiny(Boolean.getBoolean(mutiny));
+        return unitService.save(unit);
     }
 }

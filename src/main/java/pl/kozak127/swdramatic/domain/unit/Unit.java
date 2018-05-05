@@ -36,4 +36,10 @@ public class Unit {
 
     @Column(nullable = false)
     private Integer speed = 1;
+
+    @Column(nullable = false)
+    private Boolean radar = false;
+
+    @Column(nullable = false)
+    private Boolean mutiny = false;
 }
