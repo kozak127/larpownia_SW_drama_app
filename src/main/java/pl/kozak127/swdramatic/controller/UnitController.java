@@ -59,7 +59,7 @@ public class UnitController extends AbstractController {
 
         Long unitIdLong = Long.decode(unitId);
         Unit unit = unitService.findById(unitIdLong).orElseThrow(IllegalArgumentException::new);
-        unit.setMutiny(Boolean.getBoolean(mutiny));
+        unit.setMutiny(Boolean.parseBoolean(mutiny));
         return unitService.save(unit);
     }
 }

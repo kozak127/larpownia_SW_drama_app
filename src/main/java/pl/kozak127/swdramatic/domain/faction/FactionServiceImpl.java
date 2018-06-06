@@ -1,5 +1,6 @@
 package pl.kozak127.swdramatic.domain.faction;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kozak127.swdramatic.domain.field.Field;
 import pl.kozak127.swdramatic.domain.field.FieldRepository;
@@ -17,7 +18,8 @@ public class FactionServiceImpl implements FactionService {
 
     private final UnitRepository unitRepository;
 
-    FactionServiceImpl(FieldRepository fieldRepository, UnitRepository unitRepository) {
+    @Autowired
+    public FactionServiceImpl(FieldRepository fieldRepository, UnitRepository unitRepository) {
         this.fieldRepository = fieldRepository;
         this.unitRepository = unitRepository;
     }

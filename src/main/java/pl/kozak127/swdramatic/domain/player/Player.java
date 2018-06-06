@@ -13,9 +13,7 @@ public class Player {
     private Long id;
 
     @ManyToOne
-    @Column()
     private Faction faction;
 
-    @Column(nullable = false)
     private boolean admin = false;
 }

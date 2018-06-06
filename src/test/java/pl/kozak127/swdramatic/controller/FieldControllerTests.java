@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hello;
+package pl.kozak127.swdramatic.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +23,43 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.kozak127.swdramatic.domain.field.FieldOrderRepository;
+import pl.kozak127.swdramatic.domain.field.FieldRepository;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GreetingControllerTests {
+public class FieldControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+    @Autowired
+    private FieldRepository fieldRepository;
 
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+    @Autowired
+    private FieldOrderRepository fieldOrderRepository;
+
+    @Before
+    public void setup() throws Exception {
+        this.fieldRepository.deleteAll();
+        this.fieldOrderRepository.deleteAll();
+
+
+    }
+
+    @Test
+    public void getAllFieldsForUser() throws Exception {
+
+        this.mockMvc
+                .perform(get("/greeting"))
+                .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("Hello, World!"));
     }
 

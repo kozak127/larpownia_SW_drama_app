@@ -4,8 +4,10 @@ import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import pl.kozak127.swdramatic.domain.field.Field;
 import pl.kozak127.swdramatic.domain.player.Player;
+import pl.kozak127.swdramatic.domain.player.PlayerRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,8 +17,11 @@ public class UnitServiceImpl implements UnitService {
 
     private final UnitRepository unitRepository;
 
-    UnitServiceImpl(UnitRepository unitRepository) {
+    private final PlayerRepository playerRepository;
+
+    UnitServiceImpl(UnitRepository unitRepository, PlayerRepository playerRepository) {
         this.unitRepository = unitRepository;
+        this.playerRepository = playerRepository;
     }
 
     @Override
@@ -33,11 +38,13 @@ public class UnitServiceImpl implements UnitService {
                 .map(Unit::getField)
                 .collect(Collectors.toSet());
 
-        Collection<Unit> visibleEnemyUnits = unitRepository.findAllByFieldIn(visibleFields);
+        List<Player> factionPlayers = playerRepository.findAllByFaction(player.getFaction());
+
+        Collection<Unit> visibleEnemyUnits = unitRepository.findAllByFieldInAndManagerNotIn(visibleFields, factionPlayers);
 
         for (Unit playerUnit : playerUnits) {
             if (playerUnit.getRadar()) {
-                visibleEnemyUnits.addAll(unitRepository.findAllByType(UnitType.SPACESHIP));
+                visibleEnemyUnits.addAll(unitRepository.findAllByTypeAndManagerNotIn(UnitType.SPACESHIP, factionPlayers));
                 break;
             }
         }

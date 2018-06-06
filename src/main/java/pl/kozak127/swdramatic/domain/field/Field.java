@@ -1,5 +1,6 @@
 package pl.kozak127.swdramatic.domain.field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import pl.kozak127.swdramatic.domain.faction.Faction;
@@ -16,15 +17,16 @@ public class Field {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
+
+    @JsonIgnore
     @ManyToMany
-    @Column
     private List<Player> managers = ImmutableList.of();
 
+    @JsonIgnore
     @ManyToOne
-    @Column
     private Faction faction;
 
     @OneToMany
-    @Column
     private List<Resource> resources = ImmutableList.of();
 }

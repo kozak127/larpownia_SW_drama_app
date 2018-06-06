@@ -14,22 +14,17 @@ public class FieldOrder {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private FieldOrderStatus status = FieldOrderStatus.WAITING;
 
     @ManyToOne
-    @Column(nullable = false)
     private Resource resource;
 
     @ManyToOne
-    @Column(nullable = false)
     private Field source;
 
     @ManyToOne
-    @Column(nullable = false)
     private Field destination;
 
-    @ManyToMany
-    @Column(nullable = false)
+    @ManyToOne
     private Player manager;
 }

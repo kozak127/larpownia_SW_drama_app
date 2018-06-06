@@ -14,7 +14,6 @@ public class Faction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
-    @Column
+    @OneToMany(mappedBy = "faction")
     private List<Player> players = ImmutableList.of();
 }

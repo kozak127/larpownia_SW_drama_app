@@ -13,15 +13,15 @@ public class ResourceTransit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @ManyToOne
     private Player owner;
 
-    @Column(nullable = false)
+    @OneToOne
     private Resource resource;
 
-    @Column(nullable = false)
+    @ManyToOne
     private Field source;
 
-    @Column(nullable = false)
+    @ManyToOne
     private Field destination;
 }

@@ -12,7 +12,8 @@ class AbstractController {
     }
 
     Player getPlayer(String playerId) {
-        Long userIdLong = Long.getLong(playerId);
+        System.out.println(playerId);
+        Long userIdLong = Long.parseLong(playerId);
         return playerService
                 .findById(userIdLong)
                 .orElseThrow(IllegalArgumentException::new);

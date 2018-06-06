@@ -11,5 +11,9 @@ public interface UnitRepository extends CrudRepository<Unit, Long> {
 
     Collection<Unit> findAllByFieldIn(Collection<Field> fields);
 
+    Collection<Unit> findAllByFieldInAndManagerNotIn(Collection<Field> fields, Collection<Player> managers);
+
     Collection<Unit> findAllByType(UnitType unitType);
+
+    Collection<Unit> findAllByTypeAndManagerNotIn(UnitType unitType, Collection<Player> managers);
 }

@@ -12,6 +12,5 @@ public class Resource {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ResourceType type;
 }

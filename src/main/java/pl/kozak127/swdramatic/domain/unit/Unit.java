@@ -1,5 +1,6 @@
 package pl.kozak127.swdramatic.domain.unit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import pl.kozak127.swdramatic.domain.field.Field;
 import pl.kozak127.swdramatic.domain.player.Player;
@@ -14,32 +15,24 @@ public class Unit {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private UnitType type;
 
     @ManyToOne
-    @Column()
     private Field field;
 
-    @OneToMany
-    @Column(nullable = false)
+    @JsonIgnore
+    @ManyToOne
     private Player manager;
 
-    @Column(nullable = false)
     private Integer successfulBlockadeChance = 0;
 
-    @Column(nullable = false)
     private Integer hitPoints = 100;
 
-    @Column(nullable = false)
     private Integer attack = 10;
 
-    @Column(nullable = false)
     private Integer speed = 1;
 
-    @Column(nullable = false)
     private Boolean radar = false;
 
-    @Column(nullable = false)
     private Boolean mutiny = false;
 }
