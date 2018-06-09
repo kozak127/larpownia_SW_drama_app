@@ -14,6 +14,8 @@ public class Unit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
+
     @Enumerated(EnumType.STRING)
     private UnitType type;
 

@@ -79,6 +79,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         fieldRepository.save(field2);
 
         Unit unit11 = new Unit();
+        unit11.setName("unit11");
         unit11.setManager(player1);
         unit11.setType(UnitType.INFANTRY);
         unit11.setMutiny(false);
@@ -89,6 +90,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         unitRepository.save(unit11);
 
         Unit unit12 = new Unit();
+        unit12.setName("unit12");
         unit12.setManager(player1);
         unit12.setType(UnitType.SPACESHIP);
         unit12.setMutiny(false);
@@ -99,6 +101,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         unitRepository.save(unit12);
 
         Unit unit21 = new Unit();
+        unit21.setName("unit21");
         unit21.setManager(player2);
         unit21.setType(UnitType.SPACESHIP);
         unit21.setMutiny(false);
