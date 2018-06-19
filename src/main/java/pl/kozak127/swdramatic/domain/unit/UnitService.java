@@ -13,4 +13,6 @@ public interface UnitService {
     Optional<Unit> findById(Long unitId);
 
     Unit save(Unit unit);
+
+    UnitOrder saveOrder(UnitOrder unitOrder);
 }

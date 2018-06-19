@@ -39,7 +39,6 @@ dependencies {
     compileOnly('org.projectlombok:lombok:1.16.22')
     annotationProcessor('org.projectlombok:lombok:1.16.22')
 
-    testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("com.jayway.jsonpath:json-path")
 }
 

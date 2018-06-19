@@ -18,6 +18,7 @@ public class UnitServiceImpl implements UnitService {
     private final UnitRepository unitRepository;
 
     private final PlayerRepository playerRepository;
+    private UnitOrderRepository unitOrderRepository;
 
     UnitServiceImpl(UnitRepository unitRepository, PlayerRepository playerRepository) {
         this.unitRepository = unitRepository;
@@ -60,5 +61,10 @@ public class UnitServiceImpl implements UnitService {
     @Override
     public Unit save(Unit unit) {
         return unitRepository.save(unit);
+    }
+
+    @Override
+    public UnitOrder saveOrder(UnitOrder unitOrder) {
+        return unitOrderRepository.save(unitOrder);
     }
 }

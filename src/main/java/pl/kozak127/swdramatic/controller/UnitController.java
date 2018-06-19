@@ -2,18 +2,16 @@ package pl.kozak127.swdramatic.controller;
 
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pl.kozak127.swdramatic.domain.faction.Faction;
 import pl.kozak127.swdramatic.domain.faction.FactionService;
 import pl.kozak127.swdramatic.domain.player.Player;
 import pl.kozak127.swdramatic.domain.player.PlayerService;
 import pl.kozak127.swdramatic.domain.unit.Unit;
+import pl.kozak127.swdramatic.domain.unit.UnitOrder;
 import pl.kozak127.swdramatic.domain.unit.UnitService;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/{playerId}/unit")
@@ -30,27 +28,39 @@ public class UnitController extends AbstractController {
     }
 
     @RequestMapping(path = "/allied", method = RequestMethod.GET)
-    Collection<Unit> getAllAllied(@PathVariable String playerId) {
+    ResponseEntity<?> getAllAllied(@PathVariable String playerId) {
         Player player = getPlayer(playerId);
         if (player.isAdmin()) {
-            return unitService.findAll();
+            return new ResponseEntity<>(unitService.findAll(), HttpStatus.OK);
         }
 
         Faction faction = player.getFaction();
-        return factionService.getUnits(faction);
+        return new ResponseEntity<>(factionService.getUnits(faction), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/enemy", method = RequestMethod.GET)
-    Collection<Unit> getAllVisibleEnemy(@PathVariable String playerId) {
+    ResponseEntity<?> getAllVisibleEnemy(@PathVariable String playerId) {
         Player player = getPlayer(playerId);
         if (player.isAdmin()) {
-            return ImmutableList.of();
+            return new ResponseEntity<>(ImmutableList.of(), HttpStatus.OK);
         }
-        return unitService.findVisibleEnemy(player);
+        return new ResponseEntity<>(unitService.findVisibleEnemy(player), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/order", method = RequestMethod.POST)
+    ResponseEntity<?> newOrder(@RequestBody UnitOrder unitOrder, @PathVariable String playerId) {
+        Unit unit = unitOrder.getUnit();
+        Player player = getPlayer(playerId);
+
+        if (!unit.getManager().equals(player)) {
+            return new ResponseEntity<>(new CustomErrorType("Unable to create order. Player " + playerId + " is not manager"), HttpStatus.FORBIDDEN);
+        }
+        unitService.saveOrder(unitOrder);
+        return new ResponseEntity<>(unitOrder, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/mutiny/{unitId}/{mutiny}", method = RequestMethod.PUT)
-    Unit mutiny(@PathVariable String playerId, @PathVariable String unitId, @PathVariable String mutiny) {
+    ResponseEntity<?> mutiny(@PathVariable String playerId, @PathVariable String unitId, @PathVariable String mutiny) {
 
         Player player = getPlayer(playerId);
         if (!player.isAdmin()) {
@@ -60,6 +70,6 @@ public class UnitController extends AbstractController {
         Long unitIdLong = Long.decode(unitId);
         Unit unit = unitService.findById(unitIdLong).orElseThrow(IllegalArgumentException::new);
         unit.setMutiny(Boolean.parseBoolean(mutiny));
-        return unitService.save(unit);
+        return new ResponseEntity<>(unitService.save(unit), HttpStatus.OK);
     }
 }
