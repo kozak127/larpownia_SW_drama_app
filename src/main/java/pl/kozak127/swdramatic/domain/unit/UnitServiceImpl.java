@@ -67,4 +67,14 @@ public class UnitServiceImpl implements UnitService {
     public UnitOrder saveOrder(UnitOrder unitOrder) {
         return unitOrderRepository.save(unitOrder);
     }
+
+    @Override
+    public Collection<UnitOrder> getAllOrders() {
+        return Lists.newArrayList(unitOrderRepository.findAll());
+    }
+
+    @Override
+    public Collection<UnitOrder> getOrdersForPlayer(Player player) {
+        return unitOrderRepository.findAllByManager(player);
+    }
 }

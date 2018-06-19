@@ -15,4 +15,8 @@ public interface UnitService {
     Unit save(Unit unit);
 
     UnitOrder saveOrder(UnitOrder unitOrder);
+
+    Collection<UnitOrder> getAllOrders();
+
+    Collection<UnitOrder> getOrdersForPlayer(Player player);
 }

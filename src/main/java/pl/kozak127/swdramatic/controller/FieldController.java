@@ -40,6 +40,15 @@ public class FieldController extends AbstractController {
         return new ResponseEntity<>(fieldOrder, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/orders", method = RequestMethod.GET)
+    ResponseEntity<?> listOrders(@PathVariable String playerId) {
+        Player player = getPlayer(playerId);
+        if (player.isAdmin()) {
+            return new ResponseEntity<>(fieldService.getAllOrders(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(fieldService.getOrdersForPlayer(player), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<Collection<Field>> getAll(@PathVariable String playerId) {
         Player player = getPlayer(playerId);

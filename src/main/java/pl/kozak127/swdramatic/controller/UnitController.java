@@ -59,6 +59,15 @@ public class UnitController extends AbstractController {
         return new ResponseEntity<>(unitOrder, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/orders", method = RequestMethod.GET)
+    ResponseEntity<?> listOrders(@PathVariable String playerId) {
+        Player player = getPlayer(playerId);
+        if (player.isAdmin()) {
+            return new ResponseEntity<>(unitService.getAllOrders(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(unitService.getOrdersForPlayer(player), HttpStatus.OK);
+    }
+
     @RequestMapping(path = "/mutiny/{unitId}/{mutiny}", method = RequestMethod.PUT)
     ResponseEntity<?> mutiny(@PathVariable String playerId, @PathVariable String unitId, @PathVariable String mutiny) {
 

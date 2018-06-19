@@ -3,7 +3,9 @@ package pl.kozak127.swdramatic.domain.field;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.kozak127.swdramatic.domain.player.Player;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -26,5 +28,15 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public FieldOrder saveOrder(FieldOrder fieldOrder) {
         return fieldOrderRepository.save(fieldOrder);
+    }
+
+    @Override
+    public Collection<FieldOrder> getAllOrders() {
+        return Lists.newArrayList(fieldOrderRepository.findAll());
+    }
+
+    @Override
+    public Collection<FieldOrder> getOrdersForPlayer(Player player) {
+        return fieldOrderRepository.findAllByManager(player);
     }
 }
